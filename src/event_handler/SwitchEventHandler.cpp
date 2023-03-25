@@ -1,15 +1,21 @@
 #include "SwitchEventHandler.h"
 
-SwitchEventHandler::SwitchEventHandler(unsigned char idEvent)
+SwitchEventHandler::SwitchEventHandler(CanBus *canBus, unsigned char idEvent)
 {
     _idEvent = idEvent;
+    _canBus = canBus;
 }
 
 void SwitchEventHandler::onChange(bool isOn)
 {
+    Frame frame(0x0, 2);
+    frame.setData(0, _idEvent);
+
     if(isOn) {
-        // do stuff
+        frame.setData(1, 1);
     } else {
-        // do stuff
+        frame.setData(1, 0);
     }
+    
+    _canBus->send(&frame);
 }
