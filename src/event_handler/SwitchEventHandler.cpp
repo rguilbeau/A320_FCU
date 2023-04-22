@@ -1,4 +1,5 @@
 #include "SwitchEventHandler.h"
+#include "Setup.h"
 
 SwitchEventHandler::SwitchEventHandler(CanBus *canBus, unsigned char idEvent)
 {
@@ -12,8 +13,10 @@ void SwitchEventHandler::onChange(bool isOn)
     frame.setData(0, _idEvent);
 
     if(isOn) {
+        SERIAL_PRINTLN("isOn " + String(_idEvent));
         frame.setData(1, 1);
     } else {
+        SERIAL_PRINTLN("isOff " + String(_idEvent));
         frame.setData(1, 0);
     }
     

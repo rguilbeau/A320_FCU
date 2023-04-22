@@ -1,4 +1,5 @@
 #include "RotaryEventHandler.h"
+#include "Setup.h"
 
 RotaryEventHandler::RotaryEventHandler(CanBus *canBus, unsigned char idEvent)
 {
@@ -12,8 +13,10 @@ void RotaryEventHandler::onMove(RotaryEventDirection direction)
     frame.setData(0, _idEvent);
     
     if(direction == RotaryEventDirection::INCR) {
+        SERIAL_PRINTLN("Rotary incr " + String(_idEvent));
         frame.setData(1, 1);
     } else {
+        SERIAL_PRINTLN("Rotary decr " + String(_idEvent));
         frame.setData(1, 0);
     }
     _canBus->send(&frame);
