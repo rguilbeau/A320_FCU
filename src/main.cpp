@@ -5,19 +5,19 @@
 #include <Wire.h>
 #include <mcp2515.h>
 
-#include "core/event/ButtonEvent.h"
+#include "A320_Core/event/ButtonEvent.h"
 
-#include "core/mcp_expander/McpExpander.h"
-#include "core/input/McpExpanderInput.h"
-#include "core/input/McpExpanderInputPullup.h"
+#include "A320_Core/mcp_expander/McpExpander.h"
+#include "A320_Core/input/McpExpanderInput.h"
+#include "A320_Core/input/McpExpanderInputPullup.h"
 
-#include "core/ihm/IhmInterface.h"
-#include "core/ihm/Rotary.h"
-#include "core/ihm/Button.h"
-#include "core/ihm/Switch.h"
+#include "A320_Core/ihm/IhmInterface.h"
+#include "A320_Core/ihm/Rotary.h"
+#include "A320_Core/ihm/Button.h"
+#include "A320_Core/ihm/Switch.h"
 
-#include "core/output/ArduinoPwm.h"
-#include "core/output/McpExpanderOutput.h"
+#include "A320_Core/output/ArduinoPwm.h"
+#include "A320_Core/output/McpExpanderOutput.h"
 
 #include "event_handler/RotaryEventHandler.h"
 #include "event_handler/ButtonEventHandler.h"
