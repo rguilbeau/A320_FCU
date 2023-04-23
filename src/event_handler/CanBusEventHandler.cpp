@@ -25,59 +25,46 @@ CanBusEventHandler::CanBusEventHandler(
 void CanBusEventHandler::frameReceived(Frame *frame)
 {
     switch (frame->getId()) {
-        case 0x65:
-            // Etat des témoins
-            _ap1->on(frame->getBinary(0, 0));
-            _ap2->on(frame->getBinary(0, 1));
-            _athr->on(frame->getBinary(0, 2));
-            _loc->on(frame->getBinary(0, 3));
-            _exped->on(frame->getBinary(0, 4));
-            _appr->on(frame->getBinary(0, 5));
-            _buttonDim->write(frame->getData(2));
-            _panelDim->write(frame->getData(3));
+        case GlareshieldIndicatorsFrame::ID :
+            _glareshieldIndicatorsFrame.decode(frame);
+
+            _ap1->on(_glareshieldIndicatorsFrame.ap1);
+            _ap2->on(_glareshieldIndicatorsFrame.ap2);
+            _athr->on(_glareshieldIndicatorsFrame.athr);
+            _loc->on(_glareshieldIndicatorsFrame.loc);
+            _exped->on(_glareshieldIndicatorsFrame.exped);
+            _appr->on(_glareshieldIndicatorsFrame.appr); 
             break;
         
-        case 0xC8:
-            if(frame->getBinary(0, 0)) {
-                // Test des témoins actif
-                _ap1->force(true);
-                _ap2->force(true);
-                _athr->force(true);
-                _loc->force(true);
-                _exped->force(true);
-                _appr->force(true);
-            } else {
-                // Test des témoins inactif
-                _ap1->disableForce();
-                _ap2->disableForce();
-                _athr->disableForce();
-                _loc->disableForce();
-                _exped->disableForce();
-                _appr->disableForce();
-            }
+        case BrightnessFrame::ID :
+            _brightnessFrame.decode(frame);
             break;
-
-        case 0x12C:
-            if(frame->getBinary(0, 0)) {
-                // Bus AC 1 actif
-                _ap1->disableForce();
-                _ap2->disableForce();
-                _athr->disableForce();
-                _loc->disableForce();
-                _exped->disableForce();
-                _appr->disableForce();
-            } else {
-                // Bus AC 1 inactif
-                _ap1->force(false);
-                _ap2->force(false);
-                _athr->force(false);
-                _loc->force(false);
-                _exped->force(false);
-                _appr->force(false);
-            }
-            break;
-    
-    default:
-        break;
     }    
+
+    if(_glareshieldIndicatorsFrame.isPowerOn && _brightnessFrame.testLight) {
+        // Test des témoins actif
+        _ap1->force(true);
+        _ap2->force(true);
+        _athr->force(true);
+        _loc->force(true);
+        _exped->force(true);
+        _appr->force(true);
+        _panelDim->write(_brightnessFrame.glareshieldPanel);
+    } else if(!_glareshieldIndicatorsFrame.isPowerOn) {
+        _ap1->force(false);
+        _ap2->force(false);
+        _athr->force(false);
+        _loc->force(false);
+        _exped->force(false);
+        _appr->force(false);
+        _panelDim->write(0x0);
+    } else {
+        _ap1->disableForce();
+        _ap2->disableForce();
+        _athr->disableForce();
+        _loc->disableForce();
+        _exped->disableForce();
+        _appr->disableForce();
+        _panelDim->write(_brightnessFrame.glareshieldPanel);
+    }
 }

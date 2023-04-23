@@ -8,13 +8,13 @@
 class SwitchEventHandler : public SwitchEvent {
 
     public:
-        SwitchEventHandler(CanBus *canBus, unsigned char idEvent);
+        SwitchEventHandler(CanBus *canBus, unsigned short idEvent);
 
         void onChange(bool isOn) override;
 
     private:
         CanBus *_canBus;
-        unsigned char _idEvent;
+        unsigned short _idEvent;
 };
 
 #endif

@@ -8,13 +8,13 @@
 class RotaryEventHandler : public RotaryEvent {
 
 public:
-    RotaryEventHandler(CanBus *canBus, unsigned char idEvent);
+    RotaryEventHandler(CanBus *canBus, unsigned short idEvent);
 
     void onMove(RotaryEventDirection direction) override;
 
 private:
     CanBus *_canBus;
-    unsigned char _idEvent;
+    unsigned short _idEvent;
 };
 
 #endif

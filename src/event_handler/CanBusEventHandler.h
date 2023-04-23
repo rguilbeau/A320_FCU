@@ -6,6 +6,8 @@
 #include "core/output/PwmInterface.h"
 #include "core/output/OutputInterface.h"
 #include "core/ihm/Light.h"
+#include "core/can_bus/frame/brightness/BrightnessFrame.h"
+#include "core/can_bus/frame/glareshield/GlareshieldIndicatorsFrame.h" 
 
 class CanBusEventHandler: public CanBusFrameEvent {
 
@@ -34,6 +36,9 @@ private:
     PwmInterface *_indicatorsDim;
     PwmInterface *_buttonDim;
     PwmInterface *_panelDim;
+
+    BrightnessFrame _brightnessFrame;
+    GlareshieldIndicatorsFrame _glareshieldIndicatorsFrame;
 };
 
 #endif

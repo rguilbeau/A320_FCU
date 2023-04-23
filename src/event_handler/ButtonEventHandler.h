@@ -8,13 +8,13 @@
 class ButtonEventHandler: public ButtonEvent {
 
     public:
-        ButtonEventHandler(CanBus *canBus, unsigned char idEvent);
+        ButtonEventHandler(CanBus *canBus, unsigned short idEvent);
 
         void onClick() override;
 
     private:
         CanBus *_canBus;
-        unsigned char _idEvent;
+        unsigned short _idEvent;
 };
 
 #endif

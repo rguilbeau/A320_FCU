@@ -24,6 +24,12 @@
 #include "event_handler/SwitchEventHandler.h"
 #include "event_handler/CanBusEventHandler.h"
 
+const unsigned int numberFilters = 2;
+const unsigned long filters[numberFilters] = {
+  BrightnessFrame::ID, 
+  GlareshieldIndicatorsFrame::ID
+};
+
 McpExpander mcp1;
 McpExpander mcp2;
 
@@ -45,38 +51,37 @@ CanBus canBus(
 const int ihmSize = 13;
 IhmInterface *ihm[ihmSize];
 
-
 void setup() {
   SERIAL_BEGIN(9600);
   SERIAL_PRINTLN(F("Setup..."));
 
   Wire.begin();
-
+ // ArduinoPwmTest toto(PIN_BACKLIGHT_INDICATOR);
   mcp1.begin(MCP1_ADDR);
   mcp2.begin(MCP2_ADDR);
   
-  canBus.begin();
+  canBus.begin(filters, numberFilters);
 
-  // SPD
-  ihm[0] = new Rotary(new McpExpanderInputPullup(&mcp1, PIN_SPD_ROTARY_A), new McpExpanderInputPullup(&mcp1, PIN_SPD_ROTARY_B), new RotaryEventHandler(&canBus, 0x1));
-  ihm[1] = new Button(new McpExpanderInputPullup(&mcp1, PIN_SPD_PUSH), new ButtonEventHandler(&canBus, 0x3));
-  ihm[2] = new Button(new McpExpanderInputPullup(&mcp1, PIN_SPD_PULL), new ButtonEventHandler(&canBus, 0x4));
+  // SPD 
+  ihm[0] = new Rotary(new McpExpanderInputPullup(&mcp1, PIN_SPD_ROTARY_A), new McpExpanderInputPullup(&mcp1, PIN_SPD_ROTARY_B), new RotaryEventHandler(&canBus, EVENT_FCU_SPD_BUG));
+  ihm[1] = new Button(new McpExpanderInputPullup(&mcp1, PIN_SPD_PUSH), new ButtonEventHandler(&canBus, EVENT_FCU_SPD_PUSH));
+  ihm[2] = new Button(new McpExpanderInputPullup(&mcp1, PIN_SPD_PULL), new ButtonEventHandler(&canBus, EVENT_FCU_SPD_PULL));
   
   // HDG
-  ihm[3] = new Rotary(new McpExpanderInputPullup(&mcp1, PIN_HDG_ROTARY_A), new McpExpanderInputPullup(&mcp1, PIN_HDG_ROTARY_B), new RotaryEventHandler(&canBus, 0x2));
-  ihm[4] = new Button(new McpExpanderInputPullup(&mcp1, PIN_HDG_PUSH), new ButtonEventHandler(&canBus, 0x5));
-  ihm[5] = new Button(new McpExpanderInputPullup(&mcp1, PIN_HDG_PULL), new ButtonEventHandler(&canBus, 0x6));
+  ihm[3] = new Rotary(new McpExpanderInputPullup(&mcp1, PIN_HDG_ROTARY_A), new McpExpanderInputPullup(&mcp1, PIN_HDG_ROTARY_B), new RotaryEventHandler(&canBus, EVENT_FCU_HDG_BUG));
+  ihm[4] = new Button(new McpExpanderInputPullup(&mcp1, PIN_HDG_PUSH), new ButtonEventHandler(&canBus, EVENT_FCU_HDG_PUSH));
+  ihm[5] = new Button(new McpExpanderInputPullup(&mcp1, PIN_HDG_PULL), new ButtonEventHandler(&canBus, EVENT_FCU_HDG_PULL));
 
   // ALT
-  ihm[6] = new Rotary(new McpExpanderInputPullup(&mcp1, PIN_ALT_ROTARY_A), new McpExpanderInputPullup(&mcp1, PIN_ALT_ROTARY_B), new RotaryEventHandler(&canBus, 0x3));
-  ihm[7] = new Button(new McpExpanderInputPullup(&mcp1, PIN_ALT_PUSH), new ButtonEventHandler(&canBus, 0x7));
-  ihm[8] = new Button(new McpExpanderInputPullup(&mcp1, PIN_ALT_PULL), new ButtonEventHandler(&canBus, 0x8));
-  ihm[9] = new Switch(new McpExpanderInputPullup(&mcp2, PIN_ALT_SWITCH), new SwitchEventHandler(&canBus, 0x9));
+  ihm[6] = new Rotary(new McpExpanderInputPullup(&mcp1, PIN_ALT_ROTARY_A), new McpExpanderInputPullup(&mcp1, PIN_ALT_ROTARY_B), new RotaryEventHandler(&canBus, EVENT_FCU_ALT_BUG));
+  ihm[7] = new Button(new McpExpanderInputPullup(&mcp1, PIN_ALT_PUSH), new ButtonEventHandler(&canBus, EVENT_FCU_ALT_PUSH));
+  ihm[8] = new Button(new McpExpanderInputPullup(&mcp1, PIN_ALT_PULL), new ButtonEventHandler(&canBus, EVENT_FCU_ALT_PULL));
+  ihm[9] = new Switch(new McpExpanderInputPullup(&mcp2, PIN_ALT_SWITCH), new SwitchEventHandler(&canBus, EVENT_FCU_ALT_STEP));
   
   // VS
-  ihm[10] = new Rotary(new McpExpanderInputPullup(&mcp1, PIN_VS_ROTARY_A), new McpExpanderInputPullup(&mcp1, PIN_VS_ROTARY_B), new RotaryEventHandler(&canBus, 0x4));
-  ihm[11] = new Button(new McpExpanderInputPullup(&mcp1, PIN_VS_PUSH), new ButtonEventHandler(&canBus, 0xa));
-  ihm[12] = new Button(new McpExpanderInputPullup(&mcp1, PIN_VS_PULL),  new ButtonEventHandler(&canBus, 0xb));
+  ihm[10] = new Rotary(new McpExpanderInputPullup(&mcp1, PIN_VS_ROTARY_A), new McpExpanderInputPullup(&mcp1, PIN_VS_ROTARY_B), new RotaryEventHandler(&canBus, EVENT_FCU_VS_BUG));
+  ihm[11] = new Button(new McpExpanderInputPullup(&mcp1, PIN_VS_PUSH), new ButtonEventHandler(&canBus, EVENT_FCU_VS_PUSH));
+  ihm[12] = new Button(new McpExpanderInputPullup(&mcp1, PIN_VS_PULL),  new ButtonEventHandler(&canBus, EVENT_FCU_VS_PULL));
 
   /*// Toggle buttons
   ihm[13] = new Button(new McpExpanderInputPullup(&mcp2, PIN_SPD_MACH), new ButtonEventHandler(&canBus, 0xc));
@@ -102,15 +107,9 @@ void loop() {
   mcp2.loop();
 
   // Recherche d'évenement sur les IHM
-  bool eventTriggered = false;
   for(int i = 0; i < ihmSize; i++) {
-    bool event = ihm[i]->loop();
-    eventTriggered = eventTriggered || event;
+    ihm[i]->loop();
   }
-
-  if(!eventTriggered) {
-    // Pas de loop pour le canbus si un évenement a été triggé
-    // pour laisser la priorité sur les boutons et rotary encodeur
-    canBus.loop();
-  }
+  
+  canBus.loop();
 }
