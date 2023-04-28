@@ -1,4 +1,4 @@
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
     #define SERIAL_BEGIN(x) Serial.begin(x);
@@ -17,14 +17,12 @@
 #define PIN_CAN_BUS_CS 10
 
 #define PIN_BACKLIGHT_PANEL 6
-#define PIN_BACKLIGHT_BUTTON 0
-#define PIN_BACKLIGHT_INDICATOR 0
+#define PIN_BACKLIGHT_BUTTON 5
+#define PIN_BACKLIGHT_INDICATOR 3
 
-#define PIN_SPD_MACH 0
-
-#define PIN_FPA_VS 0
-
-#define PIN_MATRIC_ALT 0
+#define PIN_SPD_MACH 2
+#define PIN_FPA_VS 3
+#define PIN_MATRIC_ALT 1
 
 #define PIN_AP1 0
 #define PIN_AP1_INDICATOR 0
@@ -35,8 +33,8 @@
 #define PIN_ATHR 0
 #define PIN_ATHR_INDICATOR 0
 
-#define PIN_LOC 0
-#define PIN_LOC_INDICATOR 0
+#define PIN_LOC 10
+#define PIN_LOC_INDICATOR 9
 
 #define PIN_EXPED 0
 #define PIN_EXPED_INDICATOR 0
@@ -81,3 +79,8 @@
 #define EVENT_FCU_VS_BUG 0x0114
 #define EVENT_FCU_VS_PUSH 0x0115
 #define EVENT_FCU_VS_PULL 0x0116
+
+#define EVENT_FCU_LOC 0x0104
+#define EVENT_FCU_SPEED_MACH 0x0107
+#define EVENT_FCU_VS_FPA 0x0108
+#define EVENT_FCU_METRICT_ALT 0x0109
