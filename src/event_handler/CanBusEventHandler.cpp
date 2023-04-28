@@ -27,13 +27,13 @@ void CanBusEventHandler::frameReceived(Frame *frame)
     switch (frame->getId()) {
         case GlareshieldIndicatorsFrame::ID :
             _glareshieldIndicatorsFrame.decode(frame);
-            Serial.println("frame: " + String(_glareshieldIndicatorsFrame.loc));
-           // _ap1->on(_glareshieldIndicatorsFrame.ap1);
-            //_ap2->on(_glareshieldIndicatorsFrame.ap2);
-           // _athr->on(_glareshieldIndicatorsFrame.athr);
+            
+            _ap1->on(_glareshieldIndicatorsFrame.ap1);
+            _ap2->on(_glareshieldIndicatorsFrame.ap2);
+            _athr->on(_glareshieldIndicatorsFrame.athr);
             _loc->on(_glareshieldIndicatorsFrame.loc);
-           // _exped->on(_glareshieldIndicatorsFrame.exped);
-           // _appr->on(_glareshieldIndicatorsFrame.appr); 
+            _exped->on(_glareshieldIndicatorsFrame.exped);
+            _appr->on(_glareshieldIndicatorsFrame.appr); 
             break;
         
         case BrightnessFrame::ID :
@@ -69,5 +69,5 @@ void CanBusEventHandler::frameReceived(Frame *frame)
     }
 
     _buttonDim->write(_brightnessFrame.buttons);
-    _indicatorsDim->write(_brightnessFrame.buttons);
+    _indicatorsDim->write(_brightnessFrame.indicators);
 }

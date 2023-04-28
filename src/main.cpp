@@ -35,7 +35,7 @@ McpExpander mcp2;
 
 CanBus *canBus = nullptr;
 
-const int ihmSize = 17;
+const int ihmSize = 22;
 IhmInterface *ihm[ihmSize];
 
 void setup() {
@@ -43,7 +43,6 @@ void setup() {
   SERIAL_PRINTLN(F("Setup..."));
 
   Wire.begin();
- // ArduinoPwmTest toto(PIN_BACKLIGHT_INDICATOR);
   mcp1.begin(MCP1_ADDR);
   mcp2.begin(MCP2_ADDR);
   
@@ -91,14 +90,14 @@ void setup() {
   ihm[15] = new Button(new McpExpanderInputPullup(&mcp2, PIN_MATRIC_ALT), new ButtonEventHandler(canBus, EVENT_FCU_METRICT_ALT));
 
   // AP1, AP2, ATHR
-  //ihm[16] = new Button(new McpExpanderInputPullup(&mcp2, PIN_AP1), new ButtonEventHandler(&canBus, 0xf));
-  //ihm[17] = new Button(new McpExpanderInputPullup(&mcp2, PIN_AP2), new ButtonEventHandler(&canBus, 0x0a));
-  //ihm[18] = new Button(new McpExpanderInputPullup(&mcp2, PIN_ATHR), new ButtonEventHandler(&canBus, 0x0b));
+  ihm[16] = new Button(new McpExpanderInputPullup(&mcp2, PIN_AP1), new ButtonEventHandler(canBus, EVENT_FCU_AP1));
+  ihm[17] = new Button(new McpExpanderInputPullup(&mcp2, PIN_AP2), new ButtonEventHandler(canBus, EVENT_FCU_AP2));
+  ihm[18] = new Button(new McpExpanderInputPullup(&mcp2, PIN_ATHR), new ButtonEventHandler(canBus, EVENT_FCU_ATHR));
   
   // APPR, LOC, EXPED
-  ihm[16] = new Button(new McpExpanderInputPullup(&mcp2, PIN_LOC), new ButtonEventHandler(canBus, EVENT_FCU_LOC));
-  //ihm[20] = new Button(new McpExpanderInputPullup(&mcp2, PIN_APPR), new ButtonEventHandler(&canBus, 0x0d));
-  //ihm[21] = new Button(new McpExpanderInputPullup(&mcp2, PIN_EXPED), new ButtonEventHandler(&canBus, 0x0e));*/
+  ihm[19] = new Button(new McpExpanderInputPullup(&mcp2, PIN_LOC), new ButtonEventHandler(canBus, EVENT_FCU_LOC));
+  ihm[20] = new Button(new McpExpanderInputPullup(&mcp2, PIN_APPR), new ButtonEventHandler(canBus, EVENT_FCU_APPR));
+  ihm[21] = new Button(new McpExpanderInputPullup(&mcp2, PIN_EXPED), new ButtonEventHandler(canBus, EVENT_FCU_EXPED));
 
   SERIAL_PRINTLN("End of setup");
 }
