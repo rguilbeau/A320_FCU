@@ -11,6 +11,7 @@ class SwitchEventHandler : public SwitchEvent {
         SwitchEventHandler(CanBus *canBus, unsigned short idEvent);
 
         void onChange(bool isOn) override;
+        void onPing(bool isOn) override;
 
     private:
         CanBus *_canBus;

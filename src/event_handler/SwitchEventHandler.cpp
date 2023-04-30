@@ -11,3 +11,8 @@ void SwitchEventHandler::onChange(bool isOn)
 {
     _canBus->sendEvent(_idEvent, isOn ? 1 : 0);
 }
+
+void SwitchEventHandler::onPing(bool isOn)
+{
+    _canBus->sendEvent(_idEvent, isOn ? 1 : 0);
+}

@@ -19,13 +19,16 @@
 #include "A320_Core/output/ArduinoPwm.h"
 #include "A320_Core/output/McpExpanderOutput.h"
 
+#include "A320_Core/can_bus/frame/ping/PingFrame.h"
+
 #include "event_handler/RotaryEventHandler.h"
 #include "event_handler/ButtonEventHandler.h"
 #include "event_handler/SwitchEventHandler.h"
 #include "event_handler/CanBusEventHandler.h"
 
-const unsigned int numberFilters = 2;
+const unsigned int numberFilters = 3;
 const unsigned long filters[numberFilters] = {
+  PingFrame::ID,
   BrightnessFrame::ID, 
   GlareshieldIndicatorsFrame::ID
 };
@@ -103,14 +106,19 @@ void setup() {
 }
 
 void loop() {
- // Lecture des broches des mcp23017
+  canBus->loop();
+  
+  // Lecture des broches des mcp23017
   mcp1.loop();
   mcp2.loop();
 
   // Recherche d'évenement sur les IHM
   for(int i = 0; i < ihmSize; i++) {
+    
+    if(canBus->isPing()) {
+      ihm[i]->ping();
+    }
+
     ihm[i]->loop();
   }
-  
-  canBus->loop();
 }
