@@ -20,6 +20,7 @@
 #include "A320_Core/output/McpExpanderOutput.h"
 
 #include "A320_Core/can_bus/frame/ping/PingFrame.h"
+#include "A320_Core/can_bus/frame/brightness/BrightnessPanelFrame.h"
 
 #include "event_handler/RotaryEventHandler.h"
 #include "event_handler/ButtonEventHandler.h"
@@ -29,7 +30,7 @@
 const unsigned int numberFilters = 3;
 const unsigned long filters[numberFilters] = {
   PingFrame::ID,
-  BrightnessFrame::ID, 
+  BrightnessPanelFrame::ID, 
   GlareshieldIndicatorsFrame::ID
 };
 

@@ -36,38 +36,12 @@ void CanBusEventHandler::frameReceived(Frame *frame)
             _appr->on(_glareshieldIndicatorsFrame.appr); 
             break;
         
-        case BrightnessFrame::ID :
-            _brightnessFrame.decode(frame);
+        case BrightnessPanelFrame::ID :
+            _brightnessPanelFrame.decode(frame);
+
+            _panelDim->write(_brightnessPanelFrame.glareshieldPanel);
+            _buttonDim->write(_brightnessPanelFrame.buttons);
+            _indicatorsDim->write(_brightnessPanelFrame.indicators);
             break;
-    }    
-
-    if(_glareshieldIndicatorsFrame.isPowerOn && _brightnessFrame.testLight) {
-        // Test des témoins actif
-        _ap1->force(true);
-        _ap2->force(true);
-        _athr->force(true);
-        _loc->force(true);
-        _exped->force(true);
-        _appr->force(true);
-        _panelDim->write(_brightnessFrame.glareshieldPanel);
-    } else if(!_glareshieldIndicatorsFrame.isPowerOn) {
-        _ap1->force(false);
-        _ap2->force(false);
-        _athr->force(false);
-        _loc->force(false);
-        _exped->force(false);
-        _appr->force(false);
-        _panelDim->write(0x0);
-    } else {
-        _ap1->disableForce();
-        _ap2->disableForce();
-        _athr->disableForce();
-        _loc->disableForce();
-        _exped->disableForce();
-        _appr->disableForce();
-        _panelDim->write(_brightnessFrame.glareshieldPanel);
     }
-
-    _buttonDim->write(_brightnessFrame.buttons);
-    _indicatorsDim->write(_brightnessFrame.indicators);
 }

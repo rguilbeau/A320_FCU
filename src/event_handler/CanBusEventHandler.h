@@ -6,7 +6,7 @@
 #include "A320_Core/output/PwmInterface.h"
 #include "A320_Core/output/OutputInterface.h"
 #include "A320_Core/ihm/Light.h"
-#include "A320_Core/can_bus/frame/brightness/BrightnessFrame.h"
+#include "A320_Core/can_bus/frame/brightness/BrightnessPanelFrame.h"
 #include "A320_Core/can_bus/frame/glareshield/GlareshieldIndicatorsFrame.h" 
 
 class CanBusEventHandler: public CanBusFrameEvent {
@@ -37,7 +37,7 @@ private:
     PwmInterface *_buttonDim;
     PwmInterface *_panelDim;
 
-    BrightnessFrame _brightnessFrame;
+    BrightnessPanelFrame _brightnessPanelFrame;
     GlareshieldIndicatorsFrame _glareshieldIndicatorsFrame;
 };
 
