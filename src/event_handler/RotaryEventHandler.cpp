@@ -11,9 +11,9 @@ void RotaryEventHandler::onMove(RotaryEventDirection direction)
 {   
     if(direction == RotaryEventDirection::INCR) {
         SERIAL_PRINTLN("Rotary incr " + String(_idEvent));
-        _canBus->sendEvent(_idEvent, 1);
+        _canBus->sendEvent(_idEvent, 1, false);
     } else {
         SERIAL_PRINTLN("Rotary decr " + String(_idEvent));
-        _canBus->sendEvent(_idEvent, 0);
+        _canBus->sendEvent(_idEvent, 0, false);
     }
 }

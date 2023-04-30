@@ -10,5 +10,5 @@ ButtonEventHandler::ButtonEventHandler(CanBus *canBus, unsigned short idEvent)
 void ButtonEventHandler::onClick()
 {
     SERIAL_PRINTLN("onClick " + String(_idEvent));
-    _canBus->sendEvent(_idEvent, 0);
+    _canBus->sendEvent(_idEvent, 0, false);
 }

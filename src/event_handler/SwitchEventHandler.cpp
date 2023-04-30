@@ -9,10 +9,10 @@ SwitchEventHandler::SwitchEventHandler(CanBus *canBus, unsigned short idEvent)
 
 void SwitchEventHandler::onChange(bool isOn)
 {
-    _canBus->sendEvent(_idEvent, isOn ? 1 : 0);
+    _canBus->sendEvent(_idEvent, isOn ? 1 : 0, false);
 }
 
 void SwitchEventHandler::onPing(bool isOn)
 {
-    _canBus->sendEvent(_idEvent, isOn ? 1 : 0);
+    _canBus->sendEvent(_idEvent, isOn ? 1 : 0, true);
 }
