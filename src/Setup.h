@@ -1,4 +1,4 @@
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
     #define SERIAL_BEGIN(x) Serial.begin(x);
