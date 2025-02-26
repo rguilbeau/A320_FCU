@@ -1,0 +1,6 @@
+[submodule "lib/core"]
+	path = lib/core
+	url = https://github.com/rguilbeau/A320_Core.git
+[submodule "lib/frames"]
+	path = lib/frames
+	url = https://github.com/rguilbeau/A320_Frames.git
