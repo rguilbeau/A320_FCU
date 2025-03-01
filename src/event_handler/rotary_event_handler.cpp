@@ -12,14 +12,14 @@ void RotaryEventHandler::onMove(const RotaryEvent::e_direction &direction)
 {   
     if(direction == RotaryEvent::e_direction::INCR) 
     {
-        SERIAL_PRINTLN("Rotary incr " + String(_idEvent));
+        //SERIAL_PRINTLN("Rotary incr " + String(m_incrEvent));
 
         FrameEvent e(m_incrEvent);
         m_pCanBus->send(e);
     } 
     else 
     {
-        SERIAL_PRINTLN("Rotary decr " + String(_idEvent));
+        //SERIAL_PRINTLN("Rotary decr " + String(m_decrEvent));
 
         FrameEvent e(m_decrEvent);
         m_pCanBus->send(e);

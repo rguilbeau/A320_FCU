@@ -9,7 +9,7 @@ ButtonEventHandler::ButtonEventHandler(CanBus *pCanBus, const e_event &event)
 
 void ButtonEventHandler::onClick()
 {
-    SERIAL_PRINTLN("onClick " + String(_idEvent));
+    //SERIAL_PRINTLN("onClick " + String(static_cast<uint64_t>(m_event));
     
     FrameEvent e(m_event);
     m_pCanBus->send(e);

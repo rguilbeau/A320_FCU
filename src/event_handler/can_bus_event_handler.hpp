@@ -43,6 +43,10 @@ private:
 
     FrameBrightnessPanel m_brightnessPanelFrame;
     FrameGlareshieldIndicator m_glareshieldIndicatorFrame;
+
+    bool m_bIsTestLight = false;
+
+    void setLights();
 };
 
 #endif

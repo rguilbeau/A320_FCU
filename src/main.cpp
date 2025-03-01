@@ -27,7 +27,8 @@
 #include "event_handler/rotary_event_handler.hpp"
 #include "event_handler/switch_event_handler.hpp"
 
-const uint16_t numberFilters = 3;
+
+const uint16_t numberFilters = 2;
 const uint32_t filters[numberFilters] = {
   e_frameId::GLARESHIELD_INDICATOR,
   e_frameId::BRIGTNESS_PANEL
@@ -47,6 +48,8 @@ void setup()
   SERIAL_PRINTLN(F("Setup..."));
 
   Wire.begin();
+  Wire.setClock(400000); // I2C fast mode
+  
   mcp1.begin(MCP1_ADDR);
   mcp2.begin(MCP2_ADDR);
   
@@ -71,7 +74,7 @@ void setup()
   //                                        SPD
   //---------------------------------------------------------------------------------------------
   ihm[0] = new Rotary(new McpExpanderInputPullup(&mcp1, PIN_SPD_ROTARY_A), new McpExpanderInputPullup(&mcp1, PIN_SPD_ROTARY_B), 
-            new RotaryEventHandler(canBus, e_event::FCU_SPEED_INCR, e_event::FCU_SPEED_INCR));
+            new RotaryEventHandler(canBus, e_event::FCU_SPEED_INCR, e_event::FCU_SPEED_DECR));
 
   ihm[1] = new Button(new McpExpanderInputPullup(&mcp1, PIN_SPD_PUSH),
             new ButtonEventHandler(canBus, e_event::FCU_SPEED_PUSH));
@@ -167,7 +170,7 @@ void setup()
 void loop() 
 {
   canBus->loop();
-  
+
   // Lecture des broches des mcp23017
   mcp1.loop();
   mcp2.loop();
