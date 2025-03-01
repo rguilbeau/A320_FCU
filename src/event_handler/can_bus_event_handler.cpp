@@ -31,7 +31,13 @@ void CanBusEventHandler::frameReceived(const Frame &frame)
         if(glareshieldIndicatorFrame != m_glareshieldIndicatorFrame)
         {
             m_glareshieldIndicatorFrame = glareshieldIndicatorFrame;
-            setLights();
+
+            m_pAp1->on(m_glareshieldIndicatorFrame.getAp1());
+            m_pAp2->on(m_glareshieldIndicatorFrame.getAp2());
+            m_pAthr->on(m_glareshieldIndicatorFrame.getAutoThrottle());
+            m_pLoc->on(m_glareshieldIndicatorFrame.getLoc());
+            m_pExped->on(m_glareshieldIndicatorFrame.getExped());
+            m_pAppr->on(m_glareshieldIndicatorFrame.getApproch()); 
         }
     }
 
@@ -48,19 +54,36 @@ void CanBusEventHandler::frameReceived(const Frame &frame)
             m_pButtonDim->write(m_brightnessPanelFrame.getButton());
             m_pIndicatorsDim->write(m_brightnessPanelFrame.getLightButton());
 
-            m_bIsTestLight = m_brightnessPanelFrame.isTestLight();
-
-            setLights();
+            bool bIsTestLight = m_brightnessPanelFrame.isTestLight();
+            m_pAp1->setTestLight(bIsTestLight);
+            m_pAp2->setTestLight(bIsTestLight);
+            m_pAthr->setTestLight(bIsTestLight);
+            m_pLoc->setTestLight(bIsTestLight);
+            m_pExped->setTestLight(bIsTestLight);
+            m_pAppr->setTestLight(bIsTestLight); 
         }
     }
-}
 
-void CanBusEventHandler::setLights()
-{
-    m_pAp1->on(m_glareshieldIndicatorFrame.getAp1() || m_bIsTestLight);
-    m_pAp2->on(m_glareshieldIndicatorFrame.getAp2() || m_bIsTestLight);
-    m_pAthr->on(m_glareshieldIndicatorFrame.getAutoThrottle() || m_bIsTestLight);
-    m_pLoc->on(m_glareshieldIndicatorFrame.getLoc() || m_bIsTestLight);
-    m_pExped->on(m_glareshieldIndicatorFrame.getExped() || m_bIsTestLight);
-    m_pAppr->on(m_glareshieldIndicatorFrame.getApproch() || m_bIsTestLight); 
+    else if(frame.getId() == e_frameId::POWER)
+    {
+        FramePower framePower(frame);
+        
+        if(m_framePower != framePower)
+        {
+            m_framePower = framePower;
+
+            bool bIsPowered = m_framePower.isFcuPowered();
+
+            m_pAp1->setPower(bIsPowered);
+            m_pAp2->setPower(bIsPowered);
+            m_pAthr->setPower(bIsPowered);
+            m_pLoc->setPower(bIsPowered);
+            m_pExped->setPower(bIsPowered);
+            m_pAppr->setPower(bIsPowered); 
+
+            m_pPanelDim->setPower(bIsPowered);
+            m_pButtonDim->setPower(bIsPowered);
+            m_pIndicatorsDim->setPower(bIsPowered);
+        }
+    }
 }

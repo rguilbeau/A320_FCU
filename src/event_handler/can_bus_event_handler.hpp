@@ -10,6 +10,7 @@
 
 #include "frames/frame_brightness_panel.hpp"
 #include "frames/frame_glareshield_indicator.hpp"
+#include "frames/frame_power.hpp"
 
 class CanBusEventHandler: public CanBusFrameEvent 
 {
@@ -43,10 +44,7 @@ private:
 
     FrameBrightnessPanel m_brightnessPanelFrame;
     FrameGlareshieldIndicator m_glareshieldIndicatorFrame;
-
-    bool m_bIsTestLight = false;
-
-    void setLights();
+    FramePower m_framePower;
 };
 
 #endif

@@ -28,8 +28,9 @@
 #include "event_handler/switch_event_handler.hpp"
 
 
-const uint16_t numberFilters = 2;
+const uint16_t numberFilters = 3;
 const uint32_t filters[numberFilters] = {
+  e_frameId::POWER,
   e_frameId::GLARESHIELD_INDICATOR,
   e_frameId::BRIGTNESS_PANEL
 };
