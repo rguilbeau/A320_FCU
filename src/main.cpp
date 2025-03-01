@@ -23,9 +23,9 @@
 #include "input/mcp_expander_input_pullup.hpp"
 
 #include "event_handler/can_bus_event_handler.hpp"
-#include "event_handler/button_event_handler.hpp"
-#include "event_handler/rotary_event_handler.hpp"
-#include "event_handler/switch_event_handler.hpp"
+#include "event/base_handler/button_event_handler.hpp"
+#include "event/base_handler/rotary_event_handler.hpp"
+#include "event/base_handler/switch_event_handler.hpp"
 
 
 const uint16_t numberFilters = 3;
@@ -63,9 +63,9 @@ void setup()
       new Light(new McpExpanderOutput(&mcp2, PIN_LOC_INDICATOR)),
       new Light(new McpExpanderOutput(&mcp2, PIN_EXPED_INDICATOR)),
       new Light(new McpExpanderOutput(&mcp2, PIN_APPR_INDICATOR)),
-      new ArduinoPwm(PIN_BACKLIGHT_INDICATOR),
-      new ArduinoPwm(PIN_BACKLIGHT_BUTTON),
-      new ArduinoPwm(PIN_BACKLIGHT_PANEL)
+      new Backlight(new ArduinoPwm(PIN_BACKLIGHT_INDICATOR)),
+      new Backlight(new ArduinoPwm(PIN_BACKLIGHT_BUTTON)),
+      new Backlight(new ArduinoPwm(PIN_BACKLIGHT_PANEL))
     )
   );
 
@@ -110,7 +110,7 @@ void setup()
             new ButtonEventHandler(canBus, e_event::FCU_ALTITUDE_PULL));
 
   ihm[9] = new Switch(new McpExpanderInputPullup(&mcp2, PIN_ALT_SWITCH), 
-            new SwitchEventHandler(canBus, e_event::FCU_ALTITUDE_ALT),
+            new SwitchEventHandler(canBus, e_event::FCU_ALTITUDE_ALT, 1, 0),
             new Ping(1000));
   
   

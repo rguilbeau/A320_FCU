@@ -7,9 +7,9 @@ CanBusEventHandler::CanBusEventHandler(
     Light *pLoc,
     Light *pExped,
     Light *pAppr,
-    PwmInterface *pIndicatorsDim,
-    PwmInterface *pButtonDim,
-    PwmInterface *pPanelDim
+    Backlight *pIndicatorsDim,
+    Backlight *pButtonDim,
+    Backlight *pPanelDim
 ) {
     m_pAp1 = pAp1;
     m_pAp2 = pAp2;
@@ -50,9 +50,9 @@ void CanBusEventHandler::frameReceived(const Frame &frame)
         {
             m_brightnessPanelFrame = brightnessPanelFrame;
 
-            m_pPanelDim->write(m_brightnessPanelFrame.getGlarshield());
-            m_pButtonDim->write(m_brightnessPanelFrame.getButton());
-            m_pIndicatorsDim->write(m_brightnessPanelFrame.getLightButton());
+            m_pPanelDim->set(m_brightnessPanelFrame.getGlarshield());
+            m_pButtonDim->set(m_brightnessPanelFrame.getButton());
+            m_pIndicatorsDim->set(m_brightnessPanelFrame.getLightButton());
 
             bool bIsTestLight = m_brightnessPanelFrame.isTestLight();
             m_pAp1->setTestLight(bIsTestLight);

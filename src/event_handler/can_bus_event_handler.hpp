@@ -4,9 +4,8 @@
 #include "Arduino.h"
 
 #include "event/can_bus_frame_event.hpp"
-#include "output/pwm_interface.hpp"
-#include "output/output_interface.hpp"
 #include "ihm/light.hpp"
+#include "ihm/backlight.hpp"
 
 #include "frames/frame_brightness_panel.hpp"
 #include "frames/frame_glareshield_indicator.hpp"
@@ -23,9 +22,9 @@ public:
         Light *pLoc,
         Light *pExped,
         Light *pAppr,
-        PwmInterface *pIndicatorsDim,
-        PwmInterface *pButtonDim,
-        PwmInterface *pPanelDim
+        Backlight *pIndicatorsDim,
+        Backlight *pButtonDim,
+        Backlight *pPanelDim
     );
 
     void frameReceived(const Frame &frame) override;
@@ -38,9 +37,9 @@ private:
     Light *m_pExped;
     Light *m_pAppr;
 
-    PwmInterface *m_pIndicatorsDim;
-    PwmInterface *m_pButtonDim;
-    PwmInterface *m_pPanelDim;
+    Backlight *m_pIndicatorsDim;
+    Backlight *m_pButtonDim;
+    Backlight *m_pPanelDim;
 
     FrameBrightnessPanel m_brightnessPanelFrame;
     FrameGlareshieldIndicator m_glareshieldIndicatorFrame;
